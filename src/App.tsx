@@ -1,10 +1,10 @@
 import { RouterProvider } from "react-router-dom";
-import { MainRoutes } from "./Routes/Routes";
+import { routes } from "./Routes/routes";
 
 const App = () => {
   return (
     <>
-      <RouterProvider router={MainRoutes} />
+      <RouterProvider router={routes} />
     </>
   );
 };
