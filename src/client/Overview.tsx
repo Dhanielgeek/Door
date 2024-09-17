@@ -4,6 +4,9 @@ import {
   IoMdEyeOff,
   IoMdArrowDropup,
 } from "react-icons/io";
+import { MdOutlineFileDownload, MdShare } from "react-icons/md";
+import { TbArrowsExchange } from "react-icons/tb";
+import { GiPayMoney } from "react-icons/gi";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Carousel from "../components/Carousel";
@@ -19,22 +22,28 @@ const Overview = () => {
   const fiatBalance = "₦40,000.00";
   const cryptoBalance = "952.65 BTC";
   const usdEquivalent = "~32560.32 USD"; // USD equivalent of crypto
-  const monthlyProfit = "+ $3,212.5"; // Monthly profit in USD
+  const monthlyProfit = "+ $3,212.5";
 
+  // Button data
+  const buttons = [
+    { text: "Receive", icon: <MdOutlineFileDownload />, path: "" },
+    { text: "Convert", icon: <TbArrowsExchange />, path: "convert" },
+    { text: "Add Money", icon: <GiPayMoney />, path: "" },
+    { text: "Share", icon: <MdShare />, path: "" },
+  ];
+
+  // Fiat Balance Card
   const fiatCard = (
-    <div className="w-[35%] h-[80%] bg-blue-500 rounded max-md:w-[80%] max-md:h-[10rem]">
+    <div className="w-[35%] h-[80%] bg-blue-500 rounded max-md:w-[90%] max-md:h-[10rem]">
       <div className="w-full h-[25%] flex justify-between items-center px-2">
-        <div className="w-[40%] h-full font-medium text-white cursor-pointer flex justify-start gap-3 items-center">
-          <p className="font-medium text-white">Fiat Balance</p>
-          <button
-            className="text-white"
-            onClick={() => setShowFiatBalance(!showFiatBalance)}
-          >
+        <div className="w-[40%] h-full font-medium text-white flex gap-3 items-center">
+          <p>Fiat Balance</p>
+          <button onClick={() => setShowFiatBalance(!showFiatBalance)}>
             {showFiatBalance ? <IoMdEyeOff size={18} /> : <IoMdEye size={18} />}
           </button>
         </div>
         <div
-          className="w-[50%] h-full font-medium text-white cursor-pointer flex justify-center items-center"
+          className="w-[50%] h-full font-medium text-white flex justify-center items-center cursor-pointer"
           onClick={() => navigate("/merchant/history")}
         >
           <p>Transaction History</p>
@@ -55,15 +64,13 @@ const Overview = () => {
     </div>
   );
 
+  // Crypto Balance Card
   const cryptoCard = (
-    <div className="w-[35%] h-[80%] bg-blue-500 rounded relative max-md:w-full">
+    <div className="w-[35%] h-[80%] bg-blue-500 rounded relative max-md:w-full max-md:h-[10rem]">
       <div className="w-full h-[25%] flex justify-between items-center px-2">
-        <div className="w-[50%] h-full font-medium text-white cursor-pointer flex justify-start gap-3 items-center">
-          <p className="font-medium text-white">Crypto Balance</p>
-          <button
-            className="text-white"
-            onClick={() => setShowCryptoBalance(!showCryptoBalance)}
-          >
+        <div className="w-[50%] h-full font-medium text-white flex gap-3 items-center">
+          <p>Crypto Balance</p>
+          <button onClick={() => setShowCryptoBalance(!showCryptoBalance)}>
             {showCryptoBalance ? (
               <IoMdEyeOff size={24} />
             ) : (
@@ -72,7 +79,7 @@ const Overview = () => {
           </button>
         </div>
         <div
-          className="w-[50%] h-full font-medium text-white cursor-pointer flex justify-center items-center"
+          className="w-[50%] h-full font-medium text-white flex justify-center items-center cursor-pointer"
           onClick={() => navigate("/merchant/history")}
         >
           <p>Transaction History</p>
@@ -87,7 +94,7 @@ const Overview = () => {
           {showCryptoBalance ? usdEquivalent : "****"}
         </p>
       </div>
-      <div className="w-[100%] h-[20%] flex justify-between px-3 items-center">
+      <div className="w-full h-[20%] flex justify-between px-3 items-center">
         <p className="text-white">Monthly Profit</p>
         <div className="w-[50%] h-full flex justify-center items-center">
           <p className="font-medium text-green-400">
@@ -100,18 +107,30 @@ const Overview = () => {
   );
 
   return (
-    <div className="w-[100%] h-[100%] scrollbar-thin overflow-y-scroll scrollbar-hide">
+    <div className="w-full h-full overflow-y-scroll scrollbar-thin scrollbar-hide">
+      {/* Large screen view */}
       <div className="hidden md:flex w-full h-[40%] justify-around items-center">
-        {/* Fiat and Crypto balance cards for large screens */}
         {fiatCard}
         {cryptoCard}
       </div>
-      <div className="flex md:hidden  h-[40%] justify-center items-center">
-        {/* Show Fiat and Crypto balance cards inside Carousel on small screens */}
+      {/* Small screen view */}
+      <div className="flex md:hidden h-[40%] justify-center bg-pink-500 items-center">
         <Carousel>
-          <div className="w-[80%]">{fiatCard}</div>
+          <div className="w-full">{fiatCard}</div>
           <div className="w-full">{cryptoCard}</div>
         </Carousel>
+      </div>
+      {/* Action Buttons */}
+      <div className="w-full h-[20%] flex justify-around flex-wrap bg-red-400 items-center max-md:h-[23%]">
+        {buttons.map((item, index) => (
+          <div
+            key={index}
+            className=" w-[10%] h-[40%] rounded bg-blue-500 text-white flex flex-col justify-around items-center max-md:w-[40%]"
+          >
+            {item.icon}
+            <p className=" font-semibold">{item.text}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
