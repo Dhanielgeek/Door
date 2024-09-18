@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Edit, Camera, Upload, Eye, ChevronDown } from "lucide-react";
+import Qrcode from "./Qrcode";
 
 const Merchant = () => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -166,11 +167,7 @@ const Merchant = () => {
         <div className="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
           <dt className="font-medium text-gray-900">QR Code</dt>
           <dd className="text-gray-700 sm:col-span-2">
-            <img
-              src="https://via.placeholder.com/100x100?text=QR+Code"
-              alt="QR Code"
-              className="h-24 w-24"
-            />
+            <Qrcode />
           </dd>
         </div>
       </dl>
