@@ -64,11 +64,11 @@ const Overview = () => {
         <div className="w-full h-[15%]  flex justify-start items-center px-7">
           <p className=" font-bold text-l">Revenue Analytics</p>
         </div>
-        <div className="w-full h-[85%]">
+        <div className="w-full h-[85%] max-md:w-[95%]">
           <Chart />
         </div>
       </div>
-      <div className="w-full h-[50%]">
+      <div className="w-full h-[60%] flex justify-center items-center max-md:hidden">
         <History />
       </div>
     </div>
