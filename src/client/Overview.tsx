@@ -64,7 +64,7 @@ const Overview = () => {
         <div className="w-full h-[15%]  flex justify-start items-center px-7">
           <p className=" font-bold text-l">Revenue Analytics</p>
         </div>
-        <div className="w-full h-[85%] max-md:w-[95%]">
+        <div className="w-full h-[85%] max-md:w-[95%] max-md:h-[29rem]">
           <Chart />
         </div>
       </div>
