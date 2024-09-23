@@ -95,7 +95,7 @@ const History: React.FC = () => {
       <div className="overflow-x-auto">
         {" "}
         {/* Add overflow-x-auto here */}
-        <table className="w-full min-w-full overflow-x-scroll table divide-y divide-gray-200 bg-white text-sm">
+        <table className="w-full min-w-full  table divide-y divide-gray-200 bg-white text-sm">
           <TableHeader />
           <TableBody data={transactions} />
         </table>

@@ -3,7 +3,11 @@ import { useNavigate } from "react-router-dom";
 
 const BottomNav = () => {
   const menuItems = [
-    { label: "Home", icon: <FaHome className="text-white" />, path: "/" },
+    {
+      label: "Home",
+      icon: <FaHome className="text-white" />,
+      path: "overview",
+    },
     {
       label: "History",
       icon: <FaHistory className="text-white" />,
