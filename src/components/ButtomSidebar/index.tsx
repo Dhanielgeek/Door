@@ -1,13 +1,6 @@
 import { MdOutlineClose } from "react-icons/md";
 
 const ButtomSidebar = ({ onClose }: { onClose: () => void }) => {
-  const MenuItems = [
-    {
-      path: "",
-      name: "Overview",
-    },
-  ];
-
   return (
     <div className="fixed top-[5.1rem]  right-0 h-full w-[20rem] rounded-md bg-gray-800 -z-10 overflow-auto">
       <div className="px-4 py-6 flex flex-col justify-around items-start">
