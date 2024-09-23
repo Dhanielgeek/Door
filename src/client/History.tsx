@@ -47,7 +47,10 @@ const TableHeader: React.FC = () => (
   <thead>
     <tr>
       {["ID", "Date", "Description", "Amount", "Status"].map((heading, idx) => (
-        <th key={idx} className="px-4 py-2 text-left font-medium text-gray-900">
+        <th
+          key={idx}
+          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+        >
           {heading}
         </th>
       ))}
@@ -57,7 +60,7 @@ const TableHeader: React.FC = () => (
 
 // Table Body component
 const TableBody: React.FC<{ data: Transaction[] }> = ({ data }) => (
-  <tbody className="divide-y divide-gray-200">
+  <tbody className="divide-y divide-gray-200 min-w-full">
     {data.map((transaction) => (
       <tr key={transaction.id}>
         <td className="px-4 py-2 font-medium text-gray-900">

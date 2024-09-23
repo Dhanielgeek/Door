@@ -1,7 +1,11 @@
+import { useState } from "react";
 import { FaHome, FaHistory, FaUser, FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import ButtomSidebar from "./ButtomSidebar";
 
 const BottomNav = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const menuItems = [
     {
       label: "Home",
@@ -18,7 +22,12 @@ const BottomNav = () => {
       icon: <FaUser className="text-white" />,
       path: "profile",
     },
-    { label: "Other", icon: <FaPlus className="text-white" />, path: "other" },
+    {
+      label: "Other",
+      icon: <FaPlus className="text-white" />,
+      path: "other",
+      onClick: () => setIsSidebarOpen(true),
+    },
   ];
 
   const navigate = useNavigate();
@@ -33,12 +42,17 @@ const BottomNav = () => {
         <div
           key={item.label}
           className="flex flex-col items-center justify-center cursor-pointer"
-          onClick={() => HandlePath(item.path)}
+          onClick={() =>
+            item.onClick ? item.onClick() : HandlePath(item.path)
+          }
         >
           {item.icon}
           <p className="text-white text-sm">{item.label}</p>
         </div>
       ))}
+      {isSidebarOpen && (
+        <ButtomSidebar onClose={() => setIsSidebarOpen(false)} />
+      )}
     </div>
   );
 };
