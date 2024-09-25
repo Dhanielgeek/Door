@@ -41,10 +41,10 @@ const Signup = () => {
     try {
       const response = await axios.post(url, data);
       toast.success(response.data.message);
-      localStorage.setItem("id", response.data.data._id);
+      localStorage.setItem("id", response.data.data.userId);
       console.log(response.data);
       setTimeout(() => {
-        navigate("/dashboard");
+        navigate("/verify-otp");
       });
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
