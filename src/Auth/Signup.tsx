@@ -3,36 +3,42 @@ import InputField from "../components/InputField";
 import siguplill from "../assets/Sign up-cuate.svg";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import axios from "axios";
 
 const Signup = () => {
-  const [formValues, setFormValues] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    businessName: "",
-    phoneNumber: "",
-    password: "",
-    agree: false,
-  });
-
-  const handleChange = (field: string, value: string) => {
-    setFormValues({
-      ...formValues,
-      [field]: value,
-    });
-  };
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [businessName, setBusinessName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [agree, setAgree] = useState(false);
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormValues({
-      ...formValues,
-      agree: e.target.checked,
-    });
+    setAgree(e.target.checked);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const url = `${import.meta.env.VITE_DEVE_URL}/signup`;
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log(formValues);
+
+    const data = {
+      firstName,
+      lastName,
+      email,
+      businessName,
+      phoneNumber,
+      password,
+      agree, // Assuming agree is required in the payload
+    };
+
+    try {
+      const response = await axios.post(url, data);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const navigate = useNavigate();
@@ -59,8 +65,8 @@ const Signup = () => {
             id="firstName"
             type="text"
             placeholder="First Name"
-            value={formValues.firstName}
-            onChange={(value) => handleChange("firstName", value)}
+            value={firstName}
+            onChange={setFirstName}
           />
 
           {/* Last Name */}
@@ -68,8 +74,8 @@ const Signup = () => {
             id="lastName"
             type="text"
             placeholder="Last Name"
-            value={formValues.lastName}
-            onChange={(value) => handleChange("lastName", value)}
+            value={lastName}
+            onChange={setLastName}
           />
 
           {/* Work Email */}
@@ -77,8 +83,8 @@ const Signup = () => {
             id="email"
             type="email"
             placeholder="Work Email"
-            value={formValues.email}
-            onChange={(value) => handleChange("email", value)}
+            value={email}
+            onChange={setEmail}
           />
 
           {/* Registered Business Name */}
@@ -86,8 +92,8 @@ const Signup = () => {
             id="businessName"
             type="text"
             placeholder="Registered Business Name"
-            value={formValues.businessName}
-            onChange={(value) => handleChange("businessName", value)}
+            value={businessName}
+            onChange={setBusinessName}
           />
 
           {/* Phone Number */}
@@ -95,8 +101,8 @@ const Signup = () => {
             id="phoneNumber"
             type="tel"
             placeholder="Phone Number"
-            value={formValues.phoneNumber}
-            onChange={(value) => handleChange("phoneNumber", value)}
+            value={phoneNumber}
+            onChange={setPhoneNumber}
           />
 
           {/* Password */}
@@ -104,8 +110,8 @@ const Signup = () => {
             id="password"
             type="password"
             placeholder="Password"
-            value={formValues.password}
-            onChange={(value) => handleChange("password", value)}
+            value={password}
+            onChange={setPassword}
           />
 
           {/* Checkbox: I agree */}
@@ -113,7 +119,7 @@ const Signup = () => {
             <input
               type="checkbox"
               id="agree"
-              checked={formValues.agree}
+              checked={agree}
               onChange={handleCheckboxChange}
               className="form-checkbox"
             />
