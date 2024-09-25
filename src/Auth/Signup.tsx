@@ -4,6 +4,7 @@ import siguplill from "../assets/Sign up-cuate.svg";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const Signup = () => {
   const [firstName, setFirstName] = useState("");
@@ -13,6 +14,8 @@ const Signup = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [agree, setAgree] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAgree(e.target.checked);
@@ -33,15 +36,28 @@ const Signup = () => {
       agree, // Assuming agree is required in the payload
     };
 
+    const toastloadingId = toast.loading("Please wait....");
+
     try {
       const response = await axios.post(url, data);
+      toast.success(response.data.message);
+      localStorage.setItem("id", response.data.data._id);
       console.log(response.data);
+      setTimeout(() => {
+        navigate("/dashboard");
+      });
     } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        toast.error(error.response.data.message || "Registration failed.");
+      } else {
+        toast.error("Failed to create account. Please try again.");
+      }
+
       console.log(error);
+    } finally {
+      toast.dismiss(toastloadingId);
     }
   };
-
-  const navigate = useNavigate();
 
   return (
     <div className="w-full h-screen flex justify-around items-center">
