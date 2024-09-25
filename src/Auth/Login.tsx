@@ -3,27 +3,43 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import loginIll from "../assets/Sign in-pana.svg";
 import InputField from "../components/InputField";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Login = () => {
-  const [formValues, setFormValues] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (field: string, value: string) => {
-    setFormValues({
-      ...formValues,
-      [field]: value,
-    });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    console.log(formValues);
-  };
-
+  const [email, setemail] = useState("");
+  const [password, setpassword] = useState("");
   const navigate = useNavigate();
+
+  const data = {
+    email,
+    password,
+  };
+
+  const url = `${import.meta.env.VITE_DEVE_URL}/login`;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const toastloadingId = toast.loading("Please wait....");
+    try {
+      const res = await axios.post(url, data);
+      toast.success(res.data.data);
+      setTimeout(() => {
+        navigate("merchant/overview");
+      }, 2000);
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        toast.error(
+          error.response.data.message ||
+            "Error occured while Loggin.. try again later"
+        );
+      } else {
+        toast.error("Login Failed");
+      }
+    } finally {
+      toast.dismiss(toastloadingId);
+    }
+  };
 
   return (
     <div className="w-full h-screen flex justify-around items-center">
@@ -59,8 +75,8 @@ const Login = () => {
             id="email"
             type="email"
             placeholder=" Business Email"
-            value={formValues.email}
-            onChange={(value) => handleChange("email", value)}
+            value={email}
+            onChange={setemail}
           />
 
           {/* Password */}
@@ -68,8 +84,8 @@ const Login = () => {
             id="password"
             type="password"
             placeholder="Password"
-            value={formValues.password}
-            onChange={(value) => handleChange("password", value)}
+            value={password}
+            onChange={setpassword}
           />
 
           {/* Forgot Password */}
