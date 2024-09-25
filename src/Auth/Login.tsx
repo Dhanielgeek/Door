@@ -5,6 +5,8 @@ import loginIll from "../assets/Sign in-pana.svg";
 import InputField from "../components/InputField";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setMerchant, setToken } from "../Global/Slice";
 
 const Login = () => {
   const [email, setemail] = useState("");
@@ -17,15 +19,18 @@ const Login = () => {
   };
 
   const url = `${import.meta.env.VITE_DEVE_URL}/login`;
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const toastloadingId = toast.loading("Please wait....");
     try {
       const res = await axios.post(url, data);
-      toast.success(res.data.data);
+      toast.success(res.data.message);
+      dispatch(setMerchant(res.data.data));
+      dispatch(setToken(res.data.token));
       setTimeout(() => {
-        navigate("merchant/overview");
+        navigate("/merchant/overview");
       }, 2000);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

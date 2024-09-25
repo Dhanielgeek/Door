@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Edit, Camera, Upload, Eye, ChevronDown } from "lucide-react";
 import Qrcode from "./Qrcode";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserPro } from "../../Global/Slice";
 
 const Merchant = () => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -33,6 +36,34 @@ const Merchant = () => {
       window.open(profileImage, "_blank");
     }
   };
+  // const id = localStorage.getItem("id");
+
+  const token = useSelector((state: any) => state.merchant.token);
+  const profile = useSelector((state: any) => state.merchant.profile);
+
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+
+  const url = `${import.meta.env.VITE_DEVE_URL}/userprofile`;
+
+  const dispatch = useDispatch();
+
+  const getOne = async () => {
+    try {
+      const res = await axios.get(url, { headers });
+      console.log(res);
+      dispatch(setUserPro(res.data.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getOne();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="flow-root rounded-lg border border-gray-100 py-3 max-md:h-[53rem] shadow-sm">
@@ -104,7 +135,9 @@ const Merchant = () => {
             Business Name
             <Edit className="ml-2 h-4 w-4 text-gray-500 cursor-pointer" />
           </dt>
-          <dd className="text-gray-700 sm:col-span-2">John Doe</dd>
+          <dd className="text-gray-700 sm:col-span-2">
+            {profile.firstName} {profile.lastName}
+          </dd>
         </div>
 
         {/* Mobile Number with Edit Icon */}
@@ -149,7 +182,7 @@ const Merchant = () => {
             Email
             <Edit className="ml-2 h-4 w-4 text-gray-500 cursor-pointer" />
           </dt>
-          <dd className="text-gray-700 sm:col-span-2">john@example.com</dd>
+          <dd className="text-gray-700 sm:col-span-2">{profile.email}</dd>
         </div>
 
         {/* Address with Edit Icon */}
@@ -159,7 +192,7 @@ const Merchant = () => {
             <Edit className="ml-2 h-4 w-4 text-gray-500 cursor-pointer" />
           </dt>
           <dd className="text-gray-700 sm:col-span-2">
-            0x1F43c851Debd306d9FC92808905447B861087202
+            {profile.bitcoinAddress}
           </dd>
         </div>
 

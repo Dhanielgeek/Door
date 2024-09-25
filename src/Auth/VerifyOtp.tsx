@@ -1,18 +1,20 @@
 import axios from "axios";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import InputField from "../components/InputField";
 import { motion } from "framer-motion";
 import verify from "../assets/verify.svg";
+import toast from "react-hot-toast";
 
 const VerifyOtp = () => {
-  const [email, setEmail] = useState<string>(""); // State to hold the email
   const [otp, setOtp] = useState<string[]>(new Array(6).fill("")); // State for OTP as an array of strings
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]); // Refs for each OTP input
 
   const navigate = useNavigate();
 
-  const url = `${import.meta.env.VITE_DEVE_URL}/otp`;
+  const userId = localStorage.getItem("id");
+  console.log(userId);
+
+  const url = `${import.meta.env.VITE_DEVE_URL}/otp/${userId}`;
 
   // Function to handle OTP input changes
   const handleOtpChange = (target: HTMLInputElement, index: number) => {
@@ -41,13 +43,29 @@ const VerifyOtp = () => {
 
   const HandleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const toastloadingId = toast.loading("Please wait...");
     const otpCode = otp.join(""); // Combine OTP array into a string
 
     try {
-      const response = await axios.post(url, { email, otp: otpCode });
+      const response = await axios.post(url, { otp: otpCode });
+      toast.success(response.data.data);
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
       console.log(response.data);
     } catch (error) {
       console.error("Error verifying OTP", error);
+      if (axios.isAxiosError(error) && error.response) {
+        toast.error(
+          error.response.data.messgae ||
+            "Failed to verify OTP. Please try again."
+        );
+      } else {
+        toast.error("Failed to verify OTP. Please try again.");
+      }
+    } finally {
+      toast.dismiss(toastloadingId);
     }
   };
 
@@ -58,16 +76,6 @@ const VerifyOtp = () => {
           className="flex flex-col items-center gap-4"
           onSubmit={HandleSubmit}
         >
-          {/* Email input field */}
-          <InputField
-            id="email"
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={setEmail}
-            required
-          />
-
           {/* OTP input fields */}
           <div className="flex gap-2">
             {otp.map((digit, index) => (
