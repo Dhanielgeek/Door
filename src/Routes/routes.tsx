@@ -11,6 +11,8 @@ import Security from "../client/Profile/Security";
 import Merchant from "../client/Profile/Merchant";
 import Portfolio from "../client/Portfolio";
 import Convert from "../client/Convert";
+import VerifyOtp from "../Auth/VerifyOtp";
+import ResendOtp from "../Auth/ResendOtp";
 
 export const routes = createBrowserRouter([
   {
@@ -25,6 +27,15 @@ export const routes = createBrowserRouter([
     path: "signup",
     element: <Signup />,
   },
+  {
+    path: "verify-otp",
+    element: <VerifyOtp />,
+  },
+  {
+    path: "resend-otp",
+    element: <ResendOtp />,
+  },
+
   {
     path: "merchant",
     element: <Dashboardlayout />,
