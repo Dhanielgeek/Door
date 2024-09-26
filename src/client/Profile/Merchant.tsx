@@ -45,7 +45,7 @@ const Merchant = () => {
   };
 
   const token = useSelector((state: any) => state.merchant.token);
-  const profile = useSelector((state: any) => state.merchant.profile);
+  const user = useSelector((state: any) => state.merchant.merchant);
 
   const headers = {
     "Content-Type": "application/json",
@@ -144,7 +144,7 @@ const Merchant = () => {
             <Edit className="ml-2 h-4 w-4 text-gray-500 cursor-pointer" />
           </dt>
           <dd className="text-gray-700 sm:col-span-2">
-            {profile.firstName} {profile.lastName}
+            {user.firstName} {user.lastName}
           </dd>
         </div>
 
@@ -190,7 +190,7 @@ const Merchant = () => {
             Email
             <Edit className="ml-2 h-4 w-4 text-gray-500 cursor-pointer" />
           </dt>
-          <dd className="text-gray-700 sm:col-span-2">{profile.email}</dd>
+          <dd className="text-gray-700 sm:col-span-2">{user.email}</dd>
         </div>
 
         {/* Address with Edit Icon */}
@@ -199,9 +199,7 @@ const Merchant = () => {
             Wallet Address
             <Edit className="ml-2 h-4 w-4 text-gray-500 cursor-pointer" />
           </dt>
-          <dd className="text-gray-700 sm:col-span-2">
-            {profile.bitcoinAddress}
-          </dd>
+          <dd className="text-gray-700 sm:col-span-2">{user.bitcoinAddress}</dd>
         </div>
 
         {/* QR Code (No Edit Icon) */}

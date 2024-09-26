@@ -3,28 +3,31 @@ import { MdAttachMoney } from "react-icons/md";
 import { PiCurrencyNgnBold } from "react-icons/pi";
 import Chart from "../components/Chart";
 import History from "./History";
+import { useSelector } from "react-redux";
 
 const Overview = () => {
+  const userInfo = useSelector((state: any) => state.merchant.merchant);
+
   const Content = [
     {
       text: "Total Revenue",
       icon: <GiMoneyStack className="text-orange-500" size={20} />,
       bg: "bg-orange-200",
-      value: "$6,786",
+      value: userInfo.totalBalance,
       change: "+20%",
     },
     {
       text: "Fiat Balance",
       icon: <PiCurrencyNgnBold className="text-green-500" size={20} />,
       bg: "bg-green-200",
-      value: "$4,356",
+      value: userInfo.fiatBalance,
       change: "+40%",
     },
     {
       text: "Crypto Balance",
       icon: <MdAttachMoney className="text-purple-500" size={20} />,
       bg: "bg-purple-200",
-      value: "$4,356",
+      value: userInfo.coinBalance,
       change: "-15%",
     },
   ];
