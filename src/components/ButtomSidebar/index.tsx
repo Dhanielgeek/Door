@@ -1,19 +1,47 @@
 import { MdOutlineClose } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { clearMerchant } from "../../Global/Slice";
+import { useNavigate } from "react-router-dom";
+import logo from "../../assets/dorr.png"; // Your logo path
 
 const ButtomSidebar = ({ onClose }: { onClose: () => void }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogOut = () => {
+    dispatch(clearMerchant());
+    navigate("/login");
+  };
+
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    onClose(); // Close sidebar on navigation
+  };
+
   return (
-    <div className="fixed top-[5.1rem]  right-0 h-full w-[20rem] rounded-md bg-gray-800 -z-10 overflow-auto">
+    <div className="fixed top-[8rem] right-0 h-[30rem] w-[20rem] rounded-md bg-gray-800 overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-300">
       <div className="px-4 py-6 flex flex-col justify-around items-start">
-        <div className=" w-[12rem] h-[8rem] flex justify-around items-start flex-col">
-          <button className="px-5 py-3 border border-red-400 text-white rounded-md">
-            <MdOutlineClose onClick={onClose} />
+        {/* Logo Section */}
+        <div className="w-full flex justify-between items-center mb-4">
+          <button
+            className="p-2 text-white bg-red-500 rounded-full hover:bg-red-600"
+            onClick={onClose}
+          >
+            <MdOutlineClose size={24} />
           </button>
-          <span className="grid h-10 w-32 place-content-center rounded-lg bg-gray-100 text-xs text-gray-600">
-            Logo
-          </span>
         </div>
 
-        <ul className="mt-6 space-y-1">
+        <div className="w-full flex flex-col items-center mb-8">
+          <img
+            src={logo}
+            alt="Logo"
+            className="w-24 h-24 rounded-full object-cover border-2 border-blue-500 shadow-md"
+          />
+          <p className="text-lg font-semibold text-white mt-4">The Door</p>
+        </div>
+
+        {/* Navigation Menu */}
+        <ul className="w-full space-y-2">
           <li>
             <a
               href="#"
@@ -23,119 +51,61 @@ const ButtomSidebar = ({ onClose }: { onClose: () => void }) => {
             </a>
           </li>
 
-          <li>
-            <details className="group [&_summary::-webkit-details-marker]:hidden">
-              <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                <span className="text-sm font-medium"> Teams </span>
-
-                <span className="shrink-0 transition duration-300 group-open:-rotate-180">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="size-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </span>
-              </summary>
-
-              <ul className="mt-2 space-y-1 px-4">
-                <li>
-                  <a
-                    href="#"
-                    className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                  >
-                    Banned Users
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    href="#"
-                    className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                  >
-                    Calendar
-                  </a>
-                </li>
-              </ul>
-            </details>
-          </li>
-
+          {/* New Menu Items */}
           <li>
             <a
-              href="#"
+              href=""
               className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+              onClick={() => handleNavigation("/billing")}
             >
               Billing
             </a>
           </li>
-
           <li>
             <a
-              href="#"
+              href=""
               className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+              onClick={() => handleNavigation("/invoices")}
             >
               Invoices
             </a>
           </li>
-
           <li>
-            <details className="group [&_summary::-webkit-details-marker]:hidden">
-              <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                <span className="text-sm font-medium"> Account </span>
+            <a
+              href=""
+              className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+              onClick={() => handleNavigation("/merchant/transbank")}
+            >
+              Transfer to Bank
+            </a>
+          </li>
+          <li>
+            <a
+              href=""
+              className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+              onClick={() => handleNavigation("/merchant/door2door")}
+            >
+              Door2Door
+            </a>
+          </li>
+          <li>
+            <a
+              href=""
+              className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+              onClick={() => handleNavigation("/merchant/withdraw")}
+            >
+              Withdrawal
+            </a>
+          </li>
 
-                <span className="shrink-0 transition duration-300 group-open:-rotate-180">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="size-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </span>
-              </summary>
-
-              <ul className="mt-2 space-y-1 px-4">
-                <li>
-                  <a
-                    href="#"
-                    className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                  >
-                    Details
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    href="#"
-                    className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                  >
-                    Security
-                  </a>
-                </li>
-
-                <li>
-                  <form action="#">
-                    <button
-                      type="submit"
-                      className="w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700"
-                    >
-                      Logout
-                    </button>
-                  </form>
-                </li>
-              </ul>
-            </details>
+          {/* Logout */}
+          <li>
+            <button
+              onClick={handleLogOut}
+              className="block w-full text-left rounded-lg px-4 py-2 text-sm font-medium text-red-500 hover:bg-red-100"
+            >
+              Logout
+            </button>
           </li>
         </ul>
       </div>

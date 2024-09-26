@@ -21,7 +21,7 @@ const AddInfo = () => {
     <div className="w-full h-screen p-5">
       {/* Add Bank button */}
       <div
-        className="w-[48%] h-[10%] cursor-pointer transform duration-150 hover:bg-blue-500 mt-2 rounded flex justify-start px-5 gap-3 items-center"
+        className="w-[48%] h-[10%] cursor-pointer transform duration-150 hover:bg-blue-500 mt-2 rounded flex justify-start px-5 gap-3 items-center max-md:w-[70%]"
         onClick={openModal}
       >
         <div className="w-[45px] text-white h-[45px] rounded-full flex justify-center items-center bg-blue-700">
@@ -31,7 +31,7 @@ const AddInfo = () => {
       </div>
 
       {/* Security Button */}
-      <div className="w-[48%] h-[10%] hover:bg-blue-500 transform duration-150 cursor-pointer mt-2 rounded flex justify-start px-5 gap-3 items-center">
+      <div className="w-[48%] h-[10%] hover:bg-blue-500 transform duration-150 cursor-pointer mt-2 rounded flex justify-start px-5 gap-3 items-center max-md:w-[70%]">
         <div className="w-[45px] h-[45px] text-white rounded-full flex justify-center items-center bg-blue-700">
           <MdSecurity size={30} />
         </div>

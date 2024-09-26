@@ -5,15 +5,17 @@ import Signup from "../Auth/Signup";
 import Dashboardlayout from "../Layouts/Dashboardlayout";
 import Overview from "../client/Overview";
 import History from "../client/History";
-import Reward from "../client/Reward";
+
 import Profile from "../client/Profile";
 import Security from "../client/Profile/Security";
 import Merchant from "../client/Profile/Merchant";
-import Portfolio from "../client/Portfolio";
-import Convert from "../client/Convert";
+
 import VerifyOtp from "../Auth/VerifyOtp";
 import ResendOtp from "../Auth/ResendOtp";
 import AddInfo from "../client/Profile/AddInfo";
+import Transfer2Bank from "../client/Transfer2Bank";
+import Door2door from "../client/Door2door";
+import Withdrawal from "../client/Withdrawal";
 
 export const routes = createBrowserRouter([
   {
@@ -50,16 +52,16 @@ export const routes = createBrowserRouter([
         element: <History />,
       },
       {
-        path: "rewards",
-        element: <Reward />,
+        path: "withdraw",
+        element: <Withdrawal />,
       },
       {
-        path: "portfolio",
-        element: <Portfolio />,
+        path: "transbank",
+        element: <Transfer2Bank />,
       },
       {
-        path: "convert",
-        element: <Convert />,
+        path: "door2door",
+        element: <Door2door />,
       },
       {
         path: "profile",

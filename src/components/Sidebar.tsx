@@ -4,6 +4,8 @@ import {
   MdOutlineCardGiftcard,
   MdOutlineShoppingBag,
 } from "react-icons/md";
+import { BsBank2 } from "react-icons/bs";
+import { FaHandshakeAngle } from "react-icons/fa6";
 import { TbArrowsExchange } from "react-icons/tb";
 import { FaUser } from "react-icons/fa6";
 import { CgLogOut } from "react-icons/cg";
@@ -28,19 +30,19 @@ const Sidebar = () => {
       path: "history",
     },
     {
-      label: "Rewards",
-      icon: <MdOutlineCardGiftcard />,
-      path: "history",
+      label: "Transfer to Bank",
+      icon: <BsBank2 />,
+      path: "transbank",
     },
     {
-      label: "Portfolio",
-      icon: <MdOutlineShoppingBag />,
-      path: "portfolio",
+      label: "Door 2 Door",
+      icon: <FaHandshakeAngle />,
+      path: "door2door",
     },
     {
-      label: "Convert",
+      label: "Withdrawal",
       icon: <TbArrowsExchange />,
-      path: "convert",
+      path: "withdraw",
     },
     {
       label: "Profile",
