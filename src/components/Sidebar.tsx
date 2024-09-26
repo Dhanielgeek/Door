@@ -9,6 +9,8 @@ import { FaUser } from "react-icons/fa6";
 import { CgLogOut } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/dorr.png";
+import { useDispatch } from "react-redux";
+import { clearMerchant } from "../Global/Slice";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -48,13 +50,20 @@ const Sidebar = () => {
     {
       label: "Logout",
       icon: <CgLogOut />,
-      path: "profile/merchantpro",
+      action: () => HandleLogout(),
     },
   ];
 
   // Handle menu item click
   const handleNavigation = (path: string) => {
     navigate(path); // Navigate to the provided path
+  };
+
+  const dispatch = useDispatch();
+
+  const HandleLogout = () => {
+    dispatch(clearMerchant());
+    navigate("/login");
   };
 
   return (
@@ -72,7 +81,9 @@ const Sidebar = () => {
             <li
               key={index}
               className="flex items-center space-x-3 cursor-pointer"
-              onClick={() => handleNavigation(item.path)} // Handle click event
+              onClick={() =>
+                item.action ? item.action() : handleNavigation(item.path)
+              }
             >
               <div className="flex items-center text-sm hover:bg-blue-600 px-3 py-2 rounded-md w-full transition-all duration-200">
                 <span className="text-xl">{item.icon}</span>

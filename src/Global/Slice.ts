@@ -17,9 +17,15 @@ const Slice = createSlice({
     setUserPro: (state, action) => {
       state.profile = action.payload;
     },
+    clearMerchant: (state) => {
+      state.merchant = {};
+      state.token = "";
+      state.profile = {};
+    },
   },
 });
 
-export const { setMerchant, setToken, setUserPro } = Slice.actions;
+export const { setMerchant, setToken, setUserPro, clearMerchant } =
+  Slice.actions;
 
 export default Slice.reducer;
