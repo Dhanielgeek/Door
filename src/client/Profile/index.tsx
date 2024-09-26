@@ -3,11 +3,6 @@ import { useNavigate, Outlet } from "react-router-dom";
 const Profile = () => {
   const navigate = useNavigate(); // Initialize the useNavigate hook
 
-  // Handle navigation for profile subpages
-  const goToSecurity = () => {
-    navigate("security"); // Navigate to Security page
-  };
-
   const goToMerchant = () => {
     navigate("merchantpro"); // Navigate to Merchant Profile page
   };
@@ -23,12 +18,6 @@ const Profile = () => {
 
       {/* Navigation Buttons */}
       <div className="flex space-x-4 mb-6">
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-          onClick={goToSecurity}
-        >
-          Security Settings
-        </button>
         <button
           className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
           onClick={goToMerchant}
