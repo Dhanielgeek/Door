@@ -13,6 +13,7 @@ import Portfolio from "../client/Portfolio";
 import Convert from "../client/Convert";
 import VerifyOtp from "../Auth/VerifyOtp";
 import ResendOtp from "../Auth/ResendOtp";
+import AddInfo from "../client/Profile/AddInfo";
 
 export const routes = createBrowserRouter([
   {
@@ -71,6 +72,10 @@ export const routes = createBrowserRouter([
           {
             path: "merchantpro",
             element: <Merchant />,
+          },
+          {
+            path: "addinfo",
+            element: <AddInfo />,
           },
         ],
       },

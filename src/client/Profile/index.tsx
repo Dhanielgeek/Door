@@ -12,6 +12,10 @@ const Profile = () => {
     navigate("merchantpro"); // Navigate to Merchant Profile page
   };
 
+  const goAddInfo = () => {
+    navigate("addinfo");
+  };
+
   return (
     <div className="w-full h-full p-6">
       {/* Profile Header */}
@@ -30,6 +34,12 @@ const Profile = () => {
           onClick={goToMerchant}
         >
           Merchant Profile
+        </button>
+        <button
+          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+          onClick={goAddInfo}
+        >
+          Add Bank Info
         </button>
       </div>
 
