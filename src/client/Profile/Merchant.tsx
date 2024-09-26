@@ -71,7 +71,7 @@ const Merchant = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const HandleUpdateProfile = async () => {};
+  // const HandleUpdateProfile = async () => {};
 
   return (
     <div className="flow-root rounded-lg border border-gray-100 py-3 max-md:h-[53rem] shadow-sm">
