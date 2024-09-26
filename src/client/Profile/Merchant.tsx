@@ -9,6 +9,13 @@ const Merchant = () => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [showDropdown, setShowDropdown] = useState(false);
 
+  // const [firstName, setfirstName] = useState("");
+  // const [lastName, setlastName] = useState("");
+  // const [businessName, setbusinessName] = useState("");
+  // const [phoneNumber, setphoneNumber] = useState("");
+  // const [dob, setdob] = useState(new Date());
+  // const [gender, setgender] = useState("");
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -36,7 +43,6 @@ const Merchant = () => {
       window.open(profileImage, "_blank");
     }
   };
-  // const id = localStorage.getItem("id");
 
   const token = useSelector((state: any) => state.merchant.token);
   const profile = useSelector((state: any) => state.merchant.profile);
@@ -64,6 +70,8 @@ const Merchant = () => {
     getOne();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // const HandleUpdateProfile = async () => {};
 
   return (
     <div className="flow-root rounded-lg border border-gray-100 py-3 max-md:h-[53rem] shadow-sm">
