@@ -12,7 +12,6 @@ import { clearMerchant } from "../Global/Slice";
 const Sidebar = () => {
   const navigate = useNavigate();
 
-  // Define the menu items for the sidebar
   const MenuItems = [
     {
       label: "Dashboard",

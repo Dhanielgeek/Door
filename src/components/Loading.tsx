@@ -1,5 +1,11 @@
+import logo from "../assets/dorr.png";
+
 const Loading = () => {
-  return <div>Loading</div>;
+  return (
+    <div>
+      <img src={logo} alt="" />
+    </div>
+  );
 };
 
 export default Loading;
