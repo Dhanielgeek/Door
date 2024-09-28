@@ -33,13 +33,13 @@ const Userdetails = () => {
       {/* Display user info */}
       <h1 className="text-lg font-bold mb-4">User Details</h1>
       <p>
-        <strong>First Name:</strong> {userInfo.firstName}
+        <strong>First Name:</strong>
       </p>
       <p>
-        <strong>Last Name:</strong> {userInfo.lastName}
+        <strong>Last Name:</strong>
       </p>
       <p>
-        <strong>Wallet Address:</strong> {userInfo.walletAddress}
+        <strong>Wallet Address:</strong>
       </p>
 
       {/* Buttons for payment options */}
