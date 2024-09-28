@@ -1,11 +1,15 @@
 import QRCode from "react-qr-code";
+import { useSelector } from "react-redux";
 
 const Qrcode = () => {
-  const id = localStorage.getItem("id");
+  const merchant = useSelector((state: any) => state.merchant.merchant);
 
-  console.log(id);
+  // console.log(merchant);
 
-  const qrValue = `${window.location.origin}/userinfo/${id}`;
+  const merchantId = merchant._id;
+  // console.log(merchantId);
+
+  const qrValue = `${window.location.origin}/userinfo/${merchantId}`;
 
   return (
     <div className="flex flex-col items-center">

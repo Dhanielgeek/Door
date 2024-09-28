@@ -1,23 +1,23 @@
 import { useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-// import { setUserPro } from "../Global/Slice";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserPro } from "../Global/Slice";
 
 const Userdetails = () => {
   const { _id } = useParams<{ _id: string }>();
 
-  //   const userInfo = useSelector((state: any) => state.merchant.profile);
-  //   console.log(userInfo);
+  const userInfo = useSelector((state: any) => state.merchant.profile);
+  console.log(userInfo);
 
-  //   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const url = `${import.meta.env.VITE_DEVE_URL}/getone/${_id}`;
 
   const getOne = async () => {
     try {
       const response = await axios.get(url);
-
+      dispatch(setUserPro(response.data.data));
       console.log(response.data);
     } catch (error) {
       console.log(error);
