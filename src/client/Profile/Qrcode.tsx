@@ -4,12 +4,10 @@ import { useSelector } from "react-redux";
 const Qrcode = () => {
   const merchant = useSelector((state: any) => state.merchant.merchant);
 
-  // console.log(merchant);
-
+  // Construct the correct URL
   const merchantId = merchant._id;
-  // console.log(merchantId);
-
-  const qrValue = `${window.location}/merchant/userinfo/${merchantId}`;
+  const baseUrl = "https://door-eight.vercel.app"; // Your app's base URL
+  const qrValue = `${baseUrl}/merchant/userinfo/${merchantId}`;
 
   return (
     <div className="flex flex-col items-center">
@@ -17,9 +15,9 @@ const Qrcode = () => {
         Scan the QR Code to view payment options
       </h1>
 
-      {/* Generate QR Code with a value that signifies a payment trigger */}
+      {/* Generate QR Code with the correct route */}
       <QRCode
-        value={qrValue} // Simplified value just for triggering payment options
+        value={qrValue} // The value now points to the correct URL
         size={150}
       />
 
