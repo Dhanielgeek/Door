@@ -9,7 +9,7 @@ const Qrcode = () => {
   const merchantId = merchant._id;
   // console.log(merchantId);
 
-  const qrValue = `${window.location.origin}/userinfo/${merchantId}`;
+  const qrValue = `${window.location}/merchant/userinfo/${merchantId}`;
 
   return (
     <div className="flex flex-col items-center">
