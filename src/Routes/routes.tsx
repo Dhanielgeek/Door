@@ -16,6 +16,7 @@ import AddInfo from "../client/Profile/AddInfo";
 import Transfer2Bank from "../client/Transfer2Bank";
 import Door2door from "../client/Door2door";
 import Withdrawal from "../client/Withdrawal";
+import Userdetails from "../client/Userdetails";
 
 export const routes = createBrowserRouter([
   {
@@ -62,6 +63,10 @@ export const routes = createBrowserRouter([
       {
         path: "door2door",
         element: <Door2door />,
+      },
+      {
+        path: "userinfo/:_id",
+        element: <Userdetails />,
       },
       {
         path: "profile",
