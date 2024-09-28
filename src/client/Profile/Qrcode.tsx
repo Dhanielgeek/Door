@@ -3,6 +3,8 @@ import QRCode from "react-qr-code";
 const Qrcode = () => {
   const id = localStorage.getItem("id");
 
+  console.log(id);
+
   const qrValue = `${window.location.origin}/userinfo/${id}`;
 
   return (

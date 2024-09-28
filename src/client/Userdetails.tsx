@@ -1,23 +1,23 @@
 import { useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { setUserPro } from "../Global/Slice";
+import { useSelector } from "react-redux";
+// import { setUserPro } from "../Global/Slice";
 
 const Userdetails = () => {
   const { _id } = useParams<{ _id: string }>();
 
-  const userInfo = useSelector((state: any) => state.merchant.profile);
-  console.log(userInfo);
+  //   const userInfo = useSelector((state: any) => state.merchant.profile);
+  //   console.log(userInfo);
 
-  const dispatch = useDispatch();
+  //   const dispatch = useDispatch();
 
   const url = `${import.meta.env.VITE_DEVE_URL}/getone/${_id}`;
 
   const getOne = async () => {
     try {
       const response = await axios.get(url);
-      dispatch(setUserPro(response.data.data));
+
       console.log(response.data);
     } catch (error) {
       console.log(error);
@@ -33,13 +33,13 @@ const Userdetails = () => {
       {/* Display user info */}
       <h1 className="text-lg font-bold mb-4">User Details</h1>
       <p>
-        <strong>First Name:</strong> {userInfo.firstName}
+        <strong>First Name:</strong>
       </p>
       <p>
-        <strong>Last Name:</strong> {userInfo.lastName}
+        <strong>Last Name:</strong>
       </p>
       <p>
-        <strong>Wallet Address:</strong> {userInfo.walletAddress}
+        <strong>Wallet Address:</strong>
       </p>
 
       {/* Buttons for payment options */}

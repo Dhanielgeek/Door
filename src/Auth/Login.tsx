@@ -27,6 +27,7 @@ const Login = () => {
     try {
       const res = await axios.post(url, data);
       toast.success(res.data.message);
+      localStorage.setItem("id", res.data.data._id);
       dispatch(setMerchant(res.data.data));
       dispatch(setToken(res.data.token));
       setTimeout(() => {
