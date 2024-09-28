@@ -7,7 +7,7 @@ const Qrcode = () => {
   // Construct the correct URL
   const merchantId = merchant._id;
   const baseUrl = "https://door-eight.vercel.app"; // Your app's base URL
-  const qrValue = `${baseUrl}/merchant/userinfo/${merchantId}`;
+  const qrValue = `${baseUrl}/userinfo/${merchantId}`;
 
   return (
     <div className="flex flex-col items-center">
