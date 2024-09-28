@@ -61,11 +61,6 @@ const AddInfo = () => {
                 required
               >
                 <option value="">Select Bank</option>
-                <option value="bank1">Bank of America</option>
-                <option value="bank2">Chase Bank</option>
-                <option value="bank3">Wells Fargo</option>
-                <option value="bank4">Citibank</option>
-                <option value="bank5">HSBC</option>
               </select>
             </div>
 
