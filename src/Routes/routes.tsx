@@ -64,10 +64,7 @@ export const routes = createBrowserRouter([
         path: "door2door",
         element: <Door2door />,
       },
-      {
-        path: "userinfo/:_id",
-        element: <Userdetails />,
-      },
+
       {
         path: "profile",
         element: <Profile />,
@@ -87,5 +84,9 @@ export const routes = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: "userinfo/:_id",
+    element: <Userdetails />,
   },
 ]);
