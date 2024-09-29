@@ -49,7 +49,7 @@ const VerifyOtp = () => {
 
     try {
       const response = await axios.post(url, { otp: otpCode });
-      toast.success(response.data.data);
+      toast.success(response.data.message);
       setTimeout(() => {
         navigate("/login");
       }, 3000);
