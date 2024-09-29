@@ -17,6 +17,7 @@ import Transfer2Bank from "../client/Transfer2Bank";
 import Door2door from "../client/Door2door";
 import Withdrawal from "../client/Withdrawal";
 import Userdetails from "../client/Userdetails";
+import ViewQr from "../components/ViewQr";
 
 export const routes = createBrowserRouter([
   {
@@ -88,5 +89,9 @@ export const routes = createBrowserRouter([
   {
     path: "userinfo/:_id",
     element: <Userdetails />,
+  },
+  {
+    path: "qr",
+    element: <ViewQr />,
   },
 ]);

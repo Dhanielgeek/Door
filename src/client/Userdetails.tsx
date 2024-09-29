@@ -32,8 +32,8 @@ const Userdetails = () => {
 
     window.Korapay.initialize({
       key: "pk_test_eR5xsWZRG1XfPVe8JvDJyHQWR1nieyBU2DaE5dBm",
-      reference: Keys, // Use Keys as the reference
-      amount: AmountToPay, // Convert Naira to Kobo
+      reference: Keys,
+      amount: AmountToPay,
       currency: "NGN",
       customer: {
         name: Name,
@@ -62,8 +62,8 @@ const Userdetails = () => {
   const confirmPayment = async (AmountToPay: number, customerEmail: string) => {
     const data = {
       amount: AmountToPay,
-      reference: "ref123456", // You should generate a proper reference
-      status: "success", // Confirm based on successful payment
+      reference: "ref123456",
+      status: "success",
       email: customerEmail,
     };
 
@@ -89,6 +89,7 @@ const Userdetails = () => {
 
   useEffect(() => {
     getOne();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Copy wallet address to clipboard

@@ -13,7 +13,7 @@ const Qrcode = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <h1 className="text-lg font-bold mb-4">
+      <h1 className="text-lg font-bold mb-4  px-4">
         Scan the QR Code to view payment options
       </h1>
 
