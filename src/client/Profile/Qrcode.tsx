@@ -6,6 +6,8 @@ const Qrcode = () => {
 
   // Construct the correct URL
   const merchantId = merchant._id;
+  console.log(merchantId);
+
   const baseUrl = "https://door-eight.vercel.app"; // Your app's base URL
   const qrValue = `${baseUrl}/userinfo/${merchantId}`;
 
