@@ -1,12 +1,17 @@
 import { GiMoneyStack } from "react-icons/gi";
-import { MdAttachMoney } from "react-icons/md";
+import { MdAttachMoney, MdOutlineShare } from "react-icons/md";
 import { PiCurrencyNgnBold } from "react-icons/pi";
 import Chart from "../components/Chart";
 import History from "./History";
 import { useSelector } from "react-redux";
+import { LuSend } from "react-icons/lu";
+import { TbArrowsExchange } from "react-icons/tb";
+import { useNavigate } from "react-router-dom";
 
 const Overview = () => {
   const userInfo = useSelector((state: any) => state.merchant.merchant);
+
+  const navigate = useNavigate();
 
   const Content = [
     {
@@ -31,6 +36,31 @@ const Overview = () => {
       change: "-15%",
     },
   ];
+
+  const Actions = [
+    {
+      text: "Send",
+      icon: <LuSend className="" size={20} />,
+      // bg: "bg-blue-200",
+      path: "/merchant/transbank",
+    },
+    {
+      text: "Withdraw",
+      icon: <TbArrowsExchange size={20} />,
+      bg: "bg-purple-200",
+      path: "/merchant/withdraw",
+    },
+    {
+      text: "Share",
+      icon: <MdOutlineShare size={20} />,
+      bg: "bg-pink-200",
+      path: "/qr",
+    },
+  ];
+
+  const HandlePath = (path: string) => {
+    navigate(path);
+  };
 
   return (
     <div className="w-full h-full overflow-y-scroll scrollbar-thin scrollbar-hide">
@@ -59,6 +89,21 @@ const Overview = () => {
               >
                 {item.change} this month
               </p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="w-full h-[20%] justify-around items-center  hidden max-sm:flex">
+        {Actions.map((item) => (
+          <div
+            className="w-[23%] h-[50%] bg-blue-500 rounded flex flex-col justify-center gap-2 items-center"
+            onClick={() => HandlePath(item.path)}
+          >
+            <div className="w-full h-[20%] flex justify-center items-center font-bold text-white">
+              {item.text}
+            </div>
+            <div className="w-full text-white h-[40%] flex justify-center items-center">
+              {item.icon}
             </div>
           </div>
         ))}
