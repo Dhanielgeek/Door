@@ -6,6 +6,13 @@ import { setUserPro } from "../Global/Slice";
 import { MdContentCopy } from "react-icons/md"; // Icon for the copy button
 import toast from "react-hot-toast";
 
+// Extend the window object to include Korapay
+declare global {
+  interface Window {
+    Korapay: any;
+  }
+}
+
 const Userdetails = () => {
   const { _id } = useParams<{ _id: string }>();
   const dispatch = useDispatch();
@@ -28,7 +35,6 @@ const Userdetails = () => {
     Name: string
   ) => {
     const Keys = `key${Math.random()}`; // Unique key for each payment
-    console.log("Korapay with:", AmountToPay, customerEmail, Name, Keys);
 
     window.Korapay.initialize({
       key: "pk_test_eR5xsWZRG1XfPVe8JvDJyHQWR1nieyBU2DaE5dBm",
@@ -40,41 +46,57 @@ const Userdetails = () => {
         email: customerEmail,
       },
       onClose: function (data: any) {
-        console.log(data);
+        console.log("Payment closed:", data);
       },
       onSuccess: async function (data: any) {
         console.log("Payment success:", data);
         if (data.status === "success") {
           toast.success("Successful transaction");
-
-          // Now confirm the payment
-          await confirmPayment(AmountToPay, customerEmail);
+          // Confirm the payment after success
+          confirmPayment(AmountToPay, customerEmail, Keys);
         }
       },
       onFailed: function (data: any) {
-        console.log(data);
+        console.error("Payment failed:", data);
         toast.error("Payment failed. Please try again.");
       },
     });
   };
 
-  // Confirm Payment
-  const confirmPayment = async (AmountToPay: number, customerEmail: string) => {
+  // Confirm Payment function
+  const confirmPayment = async (
+    amount: number,
+    email: string,
+    reference: string
+  ) => {
     const data = {
-      amount: AmountToPay,
-      reference: "ref123456",
+      amount,
+      reference,
       status: "success",
-      email: customerEmail,
+      email,
     };
 
     try {
       const res = await axios.post(confirmUrl, data);
-      console.log("Payment confirmation successful:", res.data);
+      console.log("Payment confirmation response:", res.data);
     } catch (err) {
-      console.log(err);
-      toast.error("Failed to confirm payment.");
+      console.error("Error confirming payment:", err);
+      toast.error("Failed to confirm payment. Please try again.");
     }
   };
+
+  useEffect(() => {
+    // Add the Korapay script dynamically, if not already added
+    const script = document.createElement("script");
+    script.src =
+      "https://korablobstorage.blob.core.windows.net/modal-bucket/korapay-collections.min.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script); // Clean up when component unmounts
+    };
+  }, []);
 
   // Fetch the user details
   const getOne = async () => {
@@ -100,6 +122,15 @@ const Userdetails = () => {
     }
   };
 
+  // Handle the Naira payment click
+  const handlePayWithNaira = () => {
+    if (amount > 0 && email) {
+      payKorapay(amount, email, `${userInfo.firstName} ${userInfo.lastName}`);
+    } else {
+      toast.error("Please enter a valid amount and email.");
+    }
+  };
+
   return (
     <div className="w-full h-screen flex justify-center items-center">
       <div className="w-[40%] h-[90%] bg-[#fdfdf7] shadow-lg rounded max-md:w-[90%] flex-col flex justify-around items-center">
@@ -110,22 +141,22 @@ const Userdetails = () => {
 
           {/* Display user info */}
           <div className="w-[90%] h-[40%] bg-white p-4 flex justify-around items-center flex-col rounded shadow">
-            <div className="w-full h-[20%]  flex justify-start items-center">
+            <div className="w-full h-[20%] flex justify-start items-center">
               <p>
                 <strong>Business Name:</strong> {userInfo.businessName || "N/A"}
               </p>
             </div>
-            <div className="w-full h-[20%]  flex justify-start items-center">
+            <div className="w-full h-[20%] flex justify-start items-center">
               <p>
                 <strong>First Name:</strong> {userInfo.firstName || "N/A"}
               </p>
             </div>
-            <div className="w-full h-[20%]  flex justify-start items-center">
+            <div className="w-full h-[20%] flex justify-start items-center">
               <p>
                 <strong>Last Name:</strong> {userInfo.lastName || "N/A"}
               </p>
             </div>
-            <div className="w-full h-[20%]  flex justify-start items-center">
+            <div className="w-full h-[20%] flex justify-start items-center">
               <p className="flex items-center space-x-2">
                 <strong>W/Address:</strong>{" "}
                 <span className=" max-md:text-sm">
@@ -173,9 +204,7 @@ const Userdetails = () => {
             {/* Pay with Naira button */}
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded"
-              onClick={() =>
-                payKorapay(amount, email, userInfo.firstName || "Customer")
-              } // Trigger Korapay first
+              onClick={handlePayWithNaira}
             >
               Pay with Naira
             </button>
