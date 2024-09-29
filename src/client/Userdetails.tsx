@@ -18,7 +18,7 @@ const Userdetails = () => {
   const dispatch = useDispatch();
 
   // State to hold amount and email
-  const [amount, setAmount] = useState<number>(); // Initial value 0
+  const [amount, setAmount] = useState<number>(0); // Initial value 0
   const [email, setEmail] = useState<string>(""); // Initial value empty
 
   const userInfo = useSelector((state: any) => state.merchant.profile);
