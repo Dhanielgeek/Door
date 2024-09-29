@@ -54,7 +54,7 @@ const Userdetails = () => {
           toast.success("Successful transaction");
 
           // Call confirm payment after successful payment
-          confirmPayment(AmountToPay, customerEmail, Keys, Name);
+          confirmPayment(AmountToPay, customerEmail, Keys);
         }
       },
       onFailed: function (data: any) {
@@ -67,7 +67,7 @@ const Userdetails = () => {
   // Confirm Payment function
   const confirmPayment = async (
     amount: number,
-    email: string,
+    // email: string,
     reference: string,
     customerName: string
   ) => {
