@@ -6,7 +6,6 @@ import { setUserPro } from "../Global/Slice";
 import { MdContentCopy } from "react-icons/md"; // Icon for the copy button
 import toast from "react-hot-toast";
 
-// Extend the window object to include Korapay
 declare global {
   interface Window {
     Korapay: any;
@@ -17,9 +16,10 @@ const Userdetails = () => {
   const { _id } = useParams<{ _id: string }>();
   const dispatch = useDispatch();
 
-  // State to hold amount and email
-  const [amount, setAmount] = useState<number>(0); // Initial value 0
+  // State to hold amount, email, and name
+  const [amount, setAmount] = useState<number | undefined>(); // Initial value undefined
   const [email, setEmail] = useState<string>(""); // Initial value empty
+  const [customerName, setCustomerName] = useState<string>("");
 
   const userInfo = useSelector((state: any) => state.merchant.profile);
   console.log(userInfo);
@@ -52,8 +52,9 @@ const Userdetails = () => {
         console.log("Payment success:", data);
         if (data.status === "success") {
           toast.success("Successful transaction");
-          // Confirm the payment after success
-          confirmPayment(AmountToPay, customerEmail, Keys);
+
+          // Call confirm payment after successful payment
+          confirmPayment(AmountToPay, customerEmail, Keys, Name);
         }
       },
       onFailed: function (data: any) {
@@ -67,13 +68,16 @@ const Userdetails = () => {
   const confirmPayment = async (
     amount: number,
     email: string,
-    reference: string
+    reference: string,
+    customerName: string
   ) => {
     const data = {
-      amount,
       reference,
-      status: "success",
-      email,
+      amount: amount.toString(), // Backend expects amount as a string
+      currency: "NGN", // Always "NGN" in this case
+      customerName,
+      status: "success", // Always "success" if payment succeeded
+      narration: "Payment for service", // Optional field, you can modify this
     };
 
     try {
@@ -122,15 +126,6 @@ const Userdetails = () => {
     }
   };
 
-  // Handle the Naira payment click
-  const handlePayWithNaira = () => {
-    if (amount > 0 && email) {
-      payKorapay(amount, email, `${userInfo.firstName} ${userInfo.lastName}`);
-    } else {
-      toast.error("Please enter a valid amount and email.");
-    }
-  };
-
   return (
     <div className="w-full h-screen flex justify-center items-center">
       <div className="w-[40%] h-[90%] bg-[#fdfdf7] shadow-lg rounded max-md:w-[90%] flex-col flex justify-around items-center">
@@ -141,22 +136,22 @@ const Userdetails = () => {
 
           {/* Display user info */}
           <div className="w-[90%] h-[40%] bg-white p-4 flex justify-around items-center flex-col rounded shadow">
-            <div className="w-full h-[20%] flex justify-start items-center">
+            <div className="w-full h-[20%]  flex justify-start items-center">
               <p>
                 <strong>Business Name:</strong> {userInfo.businessName || "N/A"}
               </p>
             </div>
-            <div className="w-full h-[20%] flex justify-start items-center">
+            <div className="w-full h-[20%]  flex justify-start items-center">
               <p>
                 <strong>First Name:</strong> {userInfo.firstName || "N/A"}
               </p>
             </div>
-            <div className="w-full h-[20%] flex justify-start items-center">
+            <div className="w-full h-[20%]  flex justify-start items-center">
               <p>
                 <strong>Last Name:</strong> {userInfo.lastName || "N/A"}
               </p>
             </div>
-            <div className="w-full h-[20%] flex justify-start items-center">
+            <div className="w-full h-[20%]  flex justify-start items-center">
               <p className="flex items-center space-x-2">
                 <strong>W/Address:</strong>{" "}
                 <span className=" max-md:text-sm">
@@ -199,12 +194,25 @@ const Userdetails = () => {
             />
           </div>
 
+          {/* Input for name */}
+          <div className="w-[90%] mt-4">
+            <label className="block mb-2 font-bold">Customer Name:</label>
+            <input
+              type="text"
+              value={customerName}
+              onChange={(e) => setCustomerName(e.target.value)}
+              placeholder="Enter Customer Name"
+              className="w-full px-3 py-2 border rounded"
+            />
+          </div>
+
           {/* Buttons for payment options */}
           <div className="mt-3 space-x-4">
             {/* Pay with Naira button */}
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded"
-              onClick={handlePayWithNaira}
+              onClick={() => payKorapay(amount!, email, customerName)}
+              disabled={!amount || !email || !customerName} // Disable if any required fields are missing
             >
               Pay with Naira
             </button>
