@@ -29,7 +29,7 @@ const Login = () => {
       toast.success(res.data.message);
       localStorage.setItem("id", res.data.data._id);
       dispatch(setMerchant(res.data.data));
-      dispatch(setToken(res.data.token));
+      dispatch(setToken(res.data.data.token));
       setTimeout(() => {
         navigate("/merchant/overview");
       }, 2000);

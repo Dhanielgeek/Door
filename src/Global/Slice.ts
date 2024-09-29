@@ -6,6 +6,7 @@ const Slice = createSlice({
     merchant: {},
     token: "",
     profile: {},
+    transactions: [],
   },
   reducers: {
     setMerchant: (state, action) => {
@@ -17,6 +18,9 @@ const Slice = createSlice({
     setUserPro: (state, action) => {
       state.profile = action.payload;
     },
+    setHistory: (state, action) => {
+      state.transactions = action.payload;
+    },
     clearMerchant: (state) => {
       state.merchant = {};
       state.token = "";
@@ -25,7 +29,7 @@ const Slice = createSlice({
   },
 });
 
-export const { setMerchant, setToken, setUserPro, clearMerchant } =
+export const { setMerchant, setToken, setUserPro, setHistory, clearMerchant } =
   Slice.actions;
 
 export default Slice.reducer;

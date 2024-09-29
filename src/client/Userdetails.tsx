@@ -16,13 +16,15 @@ const Userdetails = () => {
   const { _id } = useParams<{ _id: string }>();
   const dispatch = useDispatch();
 
-  // State to hold amount, email, and name
+  // State to hold amount and name
   const [amount, setAmount] = useState<number | undefined>();
-  const [email, setEmail] = useState<string>("");
   const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
 
   const userInfo = useSelector((state: any) => state.merchant.profile);
   console.log(userInfo);
+
+  const user = useSelector((state: any) => state.merchant.merchant);
 
   const baseUrl = `${import.meta.env.VITE_DEVE_URL}`;
   const getOneUrl = `${baseUrl}/getone/${_id}`;
@@ -41,8 +43,8 @@ const Userdetails = () => {
       amount: AmountToPay,
       currency: "NGN",
       customer: {
-        name: customerName, // Pass the name entered by the user
-        email: customerEmail,
+        name: customerName,
+        email: customerEmail, // Pass the email entered by the user
       },
       onClose: function (data: any) {
         console.log("Payment closed:", data);
@@ -53,7 +55,7 @@ const Userdetails = () => {
           toast.success("Successful transaction");
 
           // Call confirm payment after successful payment
-          confirmPayment(AmountToPay, customerEmail);
+          confirmPayment(AmountToPay); // Amount only, without email
         }
       },
       onFailed: function (data: any) {
@@ -63,10 +65,10 @@ const Userdetails = () => {
     });
   };
 
-  // Confirm Payment function (without the name)
-  const confirmPayment = async (amount: number, customerEmail: string) => {
+  // Confirm Payment function (now accepting ID instead of email)
+  const confirmPayment = async (amount: number) => {
     const data = {
-      customerEmail, // Use email as the reference
+      userId: user._id, // Use user ID as the reference
       amount: amount.toString(), // Backend expects amount as a string
       currency: "NGN", // Always "NGN" in this case
       status: "success", // Always "success" if payment succeeded
@@ -174,6 +176,17 @@ const Userdetails = () => {
               className="w-full px-3 py-2 border rounded"
             />
           </div>
+          {/* Input for email */}
+          <div className="w-[90%] mt-4">
+            <label className="block mb-2 font-bold">Customer Email:</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter Email"
+              className="w-full px-3 py-2 border rounded"
+            />
+          </div>
 
           {/* Input for amount */}
           <div className="w-[90%] mt-2">
@@ -187,25 +200,13 @@ const Userdetails = () => {
             />
           </div>
 
-          {/* Input for email */}
-          <div className="w-[90%] mt-4">
-            <label className="block mb-2 font-bold">Customer Email:</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter Email"
-              className="w-full px-3 py-2 border rounded"
-            />
-          </div>
-
           {/* Buttons for payment options */}
           <div className="mt-3 space-x-4">
             {/* Pay with Naira button */}
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded"
-              onClick={() => payKorapay(amount!, name, email)}
-              disabled={!amount || !email || !name} // Disable if any required fields are missing
+              onClick={() => payKorapay(amount!, name, email)} // Include email here
+              disabled={!amount || !name} // Disable if any required fields are missing
             >
               Pay with Naira
             </button>

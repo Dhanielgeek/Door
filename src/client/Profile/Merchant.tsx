@@ -45,6 +45,8 @@ const Merchant = () => {
   };
 
   const token = useSelector((state: any) => state.merchant.token);
+  console.log(token);
+
   const user = useSelector((state: any) => state.merchant.merchant);
 
   const headers = {
@@ -59,7 +61,7 @@ const Merchant = () => {
   const getOne = async () => {
     try {
       const res = await axios.get(url, { headers });
-      console.log(res);
+      console.log(res.data.data);
       dispatch(setUserPro(res.data.data));
     } catch (error) {
       console.log(error);

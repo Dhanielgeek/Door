@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CheckCircle, XCircle } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { setHistory } from "../Global/Slice";
 
 // Define a Transaction interface
 interface Transaction {
@@ -90,6 +93,33 @@ const TableBody: React.FC<{ data: Transaction[] }> = ({ data }) => (
 );
 
 const History: React.FC = () => {
+  const token = useSelector((state: any) => state.merchant.token);
+
+  // const TransHistory = useSelector((state: any) => state.merchant.transaction);
+
+  const dispatch = useDispatch();
+
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+  const url = `${import.meta.env.VITE_DEVE_URL}/history`;
+
+  const getHistory = async () => {
+    try {
+      const res = await axios.get(url, { headers });
+      console.log(res.data);
+      dispatch(setHistory(res.data.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getHistory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="w-full border border-gray-200 rounded-lg overflow-hidden">
       <div className="w-full bg-gray-100 px-6 py-4">
