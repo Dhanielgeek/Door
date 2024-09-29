@@ -17,9 +17,9 @@ const Userdetails = () => {
   const dispatch = useDispatch();
 
   // State to hold amount, email, and name
-  const [amount, setAmount] = useState<number | undefined>(); // Initial value undefined
-  const [email, setEmail] = useState<string>(""); // Initial value empty
-  const [customerName, setCustomerName] = useState<string>("");
+  const [amount, setAmount] = useState<number | undefined>();
+  const [email, setEmail] = useState<string>("");
+  const [name, setName] = useState<string>("");
 
   const userInfo = useSelector((state: any) => state.merchant.profile);
   console.log(userInfo);
@@ -31,18 +31,17 @@ const Userdetails = () => {
   // Function to initialize Korapay
   const payKorapay = (
     AmountToPay: number,
-    customerEmail: string,
-    Name: string
+    customerName: string,
+    customerEmail: string
   ) => {
-    const Keys = `key${Math.random()}`; // Unique key for each payment
-
+    const Keys = `key${Math.random()}`;
     window.Korapay.initialize({
       key: "pk_test_eR5xsWZRG1XfPVe8JvDJyHQWR1nieyBU2DaE5dBm",
-      reference: Keys,
+      reference: Keys, // Use email as the reference
       amount: AmountToPay,
       currency: "NGN",
       customer: {
-        name: Name,
+        name: customerName, // Pass the name entered by the user
         email: customerEmail,
       },
       onClose: function (data: any) {
@@ -54,7 +53,7 @@ const Userdetails = () => {
           toast.success("Successful transaction");
 
           // Call confirm payment after successful payment
-          confirmPayment(AmountToPay, customerEmail, Keys);
+          confirmPayment(AmountToPay, customerEmail);
         }
       },
       onFailed: function (data: any) {
@@ -64,20 +63,14 @@ const Userdetails = () => {
     });
   };
 
-  // Confirm Payment function
-  const confirmPayment = async (
-    amount: number,
-    // email: string,
-    reference: string,
-    customerName: string
-  ) => {
+  // Confirm Payment function (without the name)
+  const confirmPayment = async (amount: number, customerEmail: string) => {
     const data = {
-      reference,
+      customerEmail, // Use email as the reference
       amount: amount.toString(), // Backend expects amount as a string
       currency: "NGN", // Always "NGN" in this case
-      customerName,
       status: "success", // Always "success" if payment succeeded
-      narration: "Payment for service", // Optional field, you can modify this
+      narration: "Payment for service",
     };
 
     try {
@@ -170,6 +163,18 @@ const Userdetails = () => {
             </div>
           </div>
 
+          {/* Input for customer name */}
+          <div className="w-[90%] mt-2">
+            <label className="block mb-2 font-bold">Customer Name:</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter Your Name"
+              className="w-full px-3 py-2 border rounded"
+            />
+          </div>
+
           {/* Input for amount */}
           <div className="w-[90%] mt-2">
             <label className="block mb-2 font-bold">Amount to Pay:</label>
@@ -194,25 +199,13 @@ const Userdetails = () => {
             />
           </div>
 
-          {/* Input for name */}
-          <div className="w-[90%] mt-4">
-            <label className="block mb-2 font-bold">Customer Name:</label>
-            <input
-              type="text"
-              value={customerName}
-              onChange={(e) => setCustomerName(e.target.value)}
-              placeholder="Enter Customer Name"
-              className="w-full px-3 py-2 border rounded"
-            />
-          </div>
-
           {/* Buttons for payment options */}
           <div className="mt-3 space-x-4">
             {/* Pay with Naira button */}
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded"
-              onClick={() => payKorapay(amount!, email, customerName)}
-              disabled={!amount || !email || !customerName} // Disable if any required fields are missing
+              onClick={() => payKorapay(amount!, name, email)}
+              disabled={!amount || !email || !name} // Disable if any required fields are missing
             >
               Pay with Naira
             </button>
