@@ -8,7 +8,7 @@ import { setHistory } from "../Global/Slice";
 interface Transaction {
   _id: string;
   createdAt: string;
-  narration: string;
+  description: string;
   amount: number;
   status: "success" | "failed";
 }
@@ -32,7 +32,7 @@ const TableHeader: React.FC = () => (
 // Table Body component
 const TableBody: React.FC<{ data: Transaction[] }> = ({ data }) => (
   <tbody className="divide-y divide-gray-200 min-w-full">
-    {data.map((transaction) => (
+    {data?.map((transaction) => (
       <tr key={transaction._id}>
         <td className="px-4 py-2 font-medium text-gray-900">
           {transaction._id?.slice(-13).toUpperCase()}
@@ -41,7 +41,7 @@ const TableBody: React.FC<{ data: Transaction[] }> = ({ data }) => (
           {" "}
           {new Date(transaction.createdAt).toLocaleDateString()}
         </td>
-        <td className="px-4 py-2 text-gray-700">Payment for Service</td>
+        <td className="px-4 py-2 text-gray-700">{transaction.description}</td>
         <td className="px-4 py-2 text-gray-700">₦{transaction.amount}</td>
         <td className="px-4 py-2 text-gray-700">
           <div className="flex items-center gap-1">

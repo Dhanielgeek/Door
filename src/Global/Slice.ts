@@ -25,6 +25,7 @@ const Slice = createSlice({
       state.merchant = {};
       state.token = "";
       state.profile = {};
+      state.transactions = [];
     },
   },
 });

@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserPro } from "../Global/Slice";
 import { MdContentCopy } from "react-icons/md"; // Icon for the copy button
@@ -15,11 +15,13 @@ declare global {
 const Userdetails = () => {
   const { _id } = useParams<{ _id: string }>();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  // State to hold amount and name
+  // State to hold amount, name, email, and description
   const [amount, setAmount] = useState<number | undefined>();
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
 
   const userInfo = useSelector((state: any) => state.merchant.profile);
   const user = useSelector((state: any) => state.merchant.merchant);
@@ -40,12 +42,12 @@ const Userdetails = () => {
     const Keys = `key${Math.random()}`;
     window.Korapay.initialize({
       key: "pk_test_eR5xsWZRG1XfPVe8JvDJyHQWR1nieyBU2DaE5dBm",
-      reference: Keys, // Use email as the reference
+      reference: Keys, // Use a unique key as the reference
       amount: AmountToPay,
       currency: "NGN",
       customer: {
         name: customerName,
-        email: customerEmail, // Pass the name entered by the user
+        email: customerEmail,
       },
       onClose: function (data: any) {
         console.log("Payment closed:", data);
@@ -69,19 +71,22 @@ const Userdetails = () => {
     });
   };
 
-  // Confirm Payment function (now accepting ID instead of email)
+  // Confirm Payment function (including description and navigation to QRCode page)
   const confirmPayment = async (amount: number) => {
     const data = {
       userId: user._id, // Use user ID as the reference
       amount: amount.toString(), // Backend expects amount as a string
       currency: "NGN", // Always "NGN" in this case
       status: "success", // Always "success" if payment succeeded
-      narration: "Payment for service",
+      description: description || "", // Send the description entered by the user
     };
 
     try {
       const res = await axios.post(confirmUrl, data);
       console.log("Payment confirmation response:", res.data);
+
+      // Redirect to QRCode page after successful confirmation
+      navigate("/qrcode");
     } catch (err) {
       console.error("Error confirming payment:", err);
       toast.error("Failed to confirm payment. Please try again.");
@@ -200,6 +205,17 @@ const Userdetails = () => {
               value={amount}
               onChange={(e) => setAmount(Number(e.target.value))}
               placeholder="Enter Amount"
+              className="w-full px-3 py-2 border rounded"
+            />
+          </div>
+          {/* Input for description */}
+          <div className="w-[90%] mt-2">
+            <label className="block mb-2 font-bold">Narration:</label>
+            <input
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Enter Narration"
               className="w-full px-3 py-2 border rounded"
             />
           </div>
