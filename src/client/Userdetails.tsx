@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,13 +22,14 @@ const Userdetails = () => {
   const [email, setEmail] = useState<string>("");
 
   const userInfo = useSelector((state: any) => state.merchant.profile);
-  console.log(userInfo);
-
   const user = useSelector((state: any) => state.merchant.merchant);
 
   const baseUrl = `${import.meta.env.VITE_DEVE_URL}`;
   const getOneUrl = `${baseUrl}/getone/${_id}`;
   const confirmUrl = `${baseUrl}/confirmPayment`;
+
+  // useRef to track if confirmPayment has been called
+  const confirmPaymentCalled = useRef(false);
 
   // Function to initialize Korapay
   const payKorapay = (
@@ -44,7 +45,7 @@ const Userdetails = () => {
       currency: "NGN",
       customer: {
         name: customerName,
-        email: customerEmail, // Pass the email entered by the user
+        email: customerEmail, // Pass the name entered by the user
       },
       onClose: function (data: any) {
         console.log("Payment closed:", data);
@@ -55,7 +56,10 @@ const Userdetails = () => {
           toast.success("Successful transaction");
 
           // Call confirm payment after successful payment
-          confirmPayment(AmountToPay); // Amount only, without email
+          if (!confirmPaymentCalled.current) {
+            confirmPaymentCalled.current = true;
+            await confirmPayment(AmountToPay); // Await to ensure it's only called once
+          }
         }
       },
       onFailed: function (data: any) {
@@ -205,8 +209,8 @@ const Userdetails = () => {
             {/* Pay with Naira button */}
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded"
-              onClick={() => payKorapay(amount!, name, email)} // Include email here
-              disabled={!amount || !name} // Disable if any required fields are missing
+              onClick={() => payKorapay(amount!, name, email)}
+              disabled={!amount || !name || !email} // Disable if any required fields are missing
             >
               Pay with Naira
             </button>

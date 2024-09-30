@@ -6,44 +6,12 @@ import { setHistory } from "../Global/Slice";
 
 // Define a Transaction interface
 interface Transaction {
-  id: string;
-  date: string;
-  description: string;
+  _id: string;
+  createdAt: string;
+  narration: string;
   amount: number;
-  status: "completed" | "failed";
+  status: "success" | "failed";
 }
-
-const transactions: Transaction[] = [
-  {
-    id: "T001",
-    date: "2023-09-10",
-    description: "Payment to Vendor",
-    amount: 100,
-    status: "completed",
-  },
-  {
-    id: "T002",
-    date: "2023-09-12",
-    description: "Refund from Store",
-    amount: 50,
-    status: "failed",
-  },
-  {
-    id: "T003",
-    date: "2023-09-15",
-    description: "Transfer to Savings",
-    amount: 200,
-    status: "completed",
-  },
-  {
-    id: "T004",
-    date: "2023-09-20",
-    description: "Purchase from Store",
-    amount: 150,
-    status: "failed",
-  },
-  // Add more transactions as needed
-];
 
 // Table Header component
 const TableHeader: React.FC = () => (
@@ -65,18 +33,19 @@ const TableHeader: React.FC = () => (
 const TableBody: React.FC<{ data: Transaction[] }> = ({ data }) => (
   <tbody className="divide-y divide-gray-200 min-w-full">
     {data.map((transaction) => (
-      <tr key={transaction.id}>
+      <tr key={transaction._id}>
         <td className="px-4 py-2 font-medium text-gray-900">
-          {transaction.id}
+          {transaction._id?.slice(-13).toUpperCase()}
         </td>
-        <td className="px-4 py-2 text-gray-700">{transaction.date}</td>
-        <td className="px-4 py-2 text-gray-700">{transaction.description}</td>
         <td className="px-4 py-2 text-gray-700">
-          ${transaction.amount.toFixed(2)}
+          {" "}
+          {new Date(transaction.createdAt).toLocaleDateString()}
         </td>
+        <td className="px-4 py-2 text-gray-700">Payment for Service</td>
+        <td className="px-4 py-2 text-gray-700">₦{transaction.amount}</td>
         <td className="px-4 py-2 text-gray-700">
           <div className="flex items-center gap-1">
-            {transaction.status === "completed" ? (
+            {transaction.status === "success" ? (
               <CheckCircle className="text-green-500" size={18} />
             ) : (
               <XCircle className="text-red-500" size={18} />
@@ -95,7 +64,8 @@ const TableBody: React.FC<{ data: Transaction[] }> = ({ data }) => (
 const History: React.FC = () => {
   const token = useSelector((state: any) => state.merchant.token);
 
-  // const TransHistory = useSelector((state: any) => state.merchant.transaction);
+  const TransHistory = useSelector((state: any) => state.merchant.transactions);
+  console.log(TransHistory);
 
   const dispatch = useDispatch();
 
@@ -130,7 +100,7 @@ const History: React.FC = () => {
         {/* Add overflow-x-auto here */}
         <table className="w-full min-w-full  table divide-y divide-gray-200 bg-white text-sm">
           <TableHeader />
-          <TableBody data={transactions} />
+          <TableBody data={TransHistory} />
         </table>
       </div>
     </div>
