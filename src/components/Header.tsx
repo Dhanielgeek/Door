@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { FiBell } from "react-icons/fi"; // Notification bell icon
 import { ChevronDown } from "lucide-react"; // Dropdown arrow
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { clearMerchant } from "../Global/Slice";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,6 +15,14 @@ const Header = () => {
   const userInfo = useSelector((state: any) => state.merchant.merchant);
 
   console.log(userInfo);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const HandleLogout = () => {
+    dispatch(clearMerchant());
+    navigate("/login");
+  };
 
   return (
     <header className="w-full h-[12vh] bg-[#fdfdf7] shadow-md flex items-center justify-between px-6 max-md:px-4">
@@ -60,14 +70,13 @@ const Header = () => {
             >
               Settings
             </a>
-            <form method="POST" action="#">
-              <button
-                type="submit"
-                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 transition"
-              >
-                Logout
-              </button>
-            </form>
+
+            <button
+              onClick={HandleLogout}
+              className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 transition"
+            >
+              Logout
+            </button>
           </div>
         )}
       </div>
