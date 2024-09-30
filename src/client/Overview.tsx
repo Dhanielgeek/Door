@@ -12,8 +12,26 @@ import { useEffect } from "react";
 import axios from "axios";
 
 const Overview = () => {
-  const userInfo = useSelector((state: any) => state.merchant.merchant);
+  const userInfo = useSelector((state: any) => state.merchant.profile);
   const token = useSelector((state: any) => state.merchant.token);
+
+  const baseUrl = `${import.meta.env.VITE_DEVE_URL}`;
+  const getOneUrl = `${baseUrl}/getone/${userInfo._id}`;
+
+  const GetOne = async () => {
+    try {
+      const response = await axios.get(getOneUrl);
+      dispatch(setUserPro(response.data.data));
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    GetOne();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();

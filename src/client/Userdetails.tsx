@@ -86,7 +86,7 @@ const Userdetails = () => {
       console.log("Payment confirmation response:", res.data);
 
       // Redirect to QRCode page after successful confirmation
-      navigate("/qrcode");
+      navigate("/qr");
     } catch (err) {
       console.error("Error confirming payment:", err);
       toast.error("Failed to confirm payment. Please try again.");
