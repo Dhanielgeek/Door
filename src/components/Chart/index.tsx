@@ -1,8 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
+import { setHistory } from "../../Global/Slice";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 const AreaChart: React.FC = () => {
+  const [chartData, setChartData] = useState({
+    labels: [] as string[], // Array of dates
+    series: [] as number[], // Array of transaction values
+  });
+
+  const token = useSelector((state: any) => state.merchant.token);
+  // const TransHistory = useSelector((state: any) => state.merchant.transactions);
+  const dispatch = useDispatch();
+
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+
+  const url = `${import.meta.env.VITE_DEVE_URL}/history`;
+
+  // Fetch transaction history from API
+  const getHistory = async () => {
+    try {
+      const res = await axios.get(url, { headers });
+      const transactions = res.data.data;
+
+      // Process the transaction data into arrays for labels (dates) and series (amounts)
+      const labels = transactions.map((trans: any) => trans.createdAt);
+      const series = transactions.map((trans: any) => trans.amount);
+
+      setChartData({ labels, series });
+      dispatch(setHistory(transactions)); // Update global state if needed
+    } catch (error) {
+      console.log("Error fetching history:", error);
+    }
+  };
+
+  useEffect(() => {
+    getHistory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Chart options
   const chartOptions: ApexOptions = {
     chart: {
       height: 350,
@@ -18,21 +60,12 @@ const AreaChart: React.FC = () => {
       curve: "straight",
     },
     title: {
-      text: "Tranasction Movements",
+      text: "Transaction Movements",
       align: "left",
     },
-
-    labels: [
-      "2018-09-19T00:00:00.000Z",
-      "2018-09-19T01:30:00.000Z",
-      "2018-09-19T02:30:00.000Z",
-      "2018-09-19T03:30:00.000Z",
-      "2018-09-19T04:30:00.000Z",
-      "2018-09-19T05:30:00.000Z",
-      "2018-09-19T06:30:00.000Z",
-    ],
     xaxis: {
       type: "datetime",
+      categories: chartData.labels, // Use the API-provided dates
     },
     yaxis: {
       opposite: true,
@@ -42,10 +75,11 @@ const AreaChart: React.FC = () => {
     },
   };
 
+  // Series data for the chart
   const series = [
     {
-      name: "STOCK ABC",
-      data: [31, 40, 28, 51, 42, 109, 100],
+      name: "Transaction Amount", // Rename as per your needs
+      data: chartData.series, // Use the API-provided transaction amounts
     },
   ];
 
